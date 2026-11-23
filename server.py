@@ -67,6 +67,29 @@ def one(query: str, params: tuple = ()) -> dict | None:
     return dict(row) if row else None
 
 
+def restore_session_user() -> None:
+    """Recreate the current user in a fresh serverless SQLite instance.
+
+    Vercel Functions can receive a signed session on an instance whose
+    temporary database has not handled the earlier Firebase-sync request.
+    The identity fields below are written only by that server-verified sync.
+    """
+    user_id = session.get("user_id")
+    email = session.get("user_email")
+    uid = session.get("firebase_uid")
+    name = session.get("user_name")
+    if not user_id or not email or not uid or not name:
+        return
+    if one("SELECT id FROM users WHERE id=?", (user_id,)):
+        return
+    db().execute(
+        "INSERT OR IGNORE INTO users(id,name,email,password_hash,created_at,email_verified,firebase_uid) "
+        "VALUES (?,?,?,?,?,?,?)",
+        (user_id, name, email, generate_password_hash(secrets.token_urlsafe(32)), now(), 1, uid),
+    )
+    db().commit()
+
+
 def csrf_token() -> str:
     if "csrf_token" not in session:
         session["csrf_token"] = secrets.token_urlsafe(32)
@@ -78,6 +101,7 @@ def login_required(view):
     def wrapped(*args, **kwargs):
         if "user_id" not in session:
             return jsonify({"error": "Authentication required."}), 401
+        restore_session_user()
         return view(*args, **kwargs)
     return wrapped
 
@@ -225,6 +249,7 @@ def current_user():
     user_id = session.get("user_id")
     if not user_id:
         return jsonify({"authenticated": False})
+    restore_session_user()
     user = one("SELECT id,name,email FROM users WHERE id=? AND email_verified=1", (user_id,))
     if not user:
         session.clear()
@@ -269,6 +294,7 @@ def firebase_sync():
     db().commit()
     session.clear()
     session["user_id"], session["firebase_uid"], session.permanent = user_id, uid, True
+    session["user_name"], session["user_email"] = name, email
     return jsonify({"authenticated": True, "user": {"id": user_id, "name": name, "email": email}, "csrfToken": csrf_token()})
 
 
