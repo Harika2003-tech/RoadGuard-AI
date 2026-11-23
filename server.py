@@ -460,8 +460,14 @@ def model_prediction():
 def validate_startup() -> None:
     if not app.config["SECRET_KEY"]:
         raise RuntimeError("Set ROADGUARD_SECRET_KEY before starting. See .env.example and README.md.")
-    if not os.environ.get("FIREBASE_SERVICE_ACCOUNT_PATH"):
-        raise RuntimeError("Set FIREBASE_SERVICE_ACCOUNT_PATH before starting. See .env.example and README.md.")
+    if not (
+        os.environ.get("FIREBASE_SERVICE_ACCOUNT_PATH")
+        or os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON")
+    ):
+        raise RuntimeError(
+            "Set FIREBASE_SERVICE_ACCOUNT_PATH or FIREBASE_SERVICE_ACCOUNT_JSON before starting. "
+            "See .env.example and README.md."
+        )
 
 
 # These run for both local execution and a production WSGI server such as Gunicorn.
