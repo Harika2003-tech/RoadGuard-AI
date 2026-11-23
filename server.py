@@ -451,7 +451,11 @@ def validate_startup() -> None:
         raise RuntimeError("Set FIREBASE_SERVICE_ACCOUNT_PATH before starting. See .env.example and README.md.")
 
 
+# These run for both local execution and a production WSGI server such as Gunicorn.
+# Render provides the PORT environment variable and Gunicorn imports this module.
+validate_startup()
+init_db()
+
+
 if __name__ == "__main__":
-    validate_startup()
-    init_db()
-    app.run(host="127.0.0.1", port=int(os.environ.get("PORT", "5000")), debug=False)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "5000")), debug=False)
