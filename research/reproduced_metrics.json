@@ -1,0 +1,49 @@
+{
+  "dataset": "datasets/roadguard_realworld_derived.csv",
+  "records": 224940,
+  "train_records": 179952,
+  "test_records": 44988,
+  "split": "stratified 80:20; random_state=42",
+  "model": "RandomForestClassifier(n_estimators=180, max_depth=10, random_state=42, class_weight='balanced')",
+  "accuracy_percent": 80.6,
+  "weighted_precision_percent": 82.48,
+  "weighted_recall_percent": 80.6,
+  "weighted_f1_percent": 80.92,
+  "confusion_matrix_actual_rows_predicted_columns_low_moderate_high": [
+    [
+      15693,
+      3632,
+      598
+    ],
+    [
+      789,
+      12801,
+      2827
+    ],
+    [
+      4,
+      879,
+      7765
+    ]
+  ],
+  "class_metrics_percent": {
+    "Low": {
+      "precision": 95.19,
+      "recall": 78.77,
+      "f1": 86.2,
+      "support": 19923
+    },
+    "Moderate": {
+      "precision": 73.94,
+      "recall": 77.97,
+      "f1": 75.91,
+      "support": 16417
+    },
+    "High": {
+      "precision": 69.39,
+      "recall": 89.79,
+      "f1": 78.28,
+      "support": 8648
+    }
+  }
+}

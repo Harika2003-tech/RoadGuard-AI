@@ -1,0 +1,30 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Secrets and local data
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
+
+# Backups, uploads, logs and generated files
+backups/
+uploads/
+logs/
+*.log
+
+# Research datasets: retain locally, add only after checking redistribution terms
+datasets/*.csv
+
+# Tooling and operating-system files
+.pytest_cache/
+.coverage
+.DS_Store
+Thumbs.db
+
+_zip_test/

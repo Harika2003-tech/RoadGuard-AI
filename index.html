@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071b29" />
+  <title>RoadGuard AI | Safer journeys, intelligently</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="onboarding.css" />
+  <link rel="stylesheet" href="motion.css" />
+</head>
+<body>
+  <div class="auth-screen" id="auth-screen">
+    <div class="auth-art"><div class="glow glow-one"></div><div class="glow glow-two"></div><div class="auth-brand"><span class="brand-mark">⌁</span> RoadGuard <b>AI</b></div><div class="road"><i></i><i></i><i></i></div><div class="auth-copy"><p class="eyebrow">INTELLIGENT ROAD SAFETY</p><h1>Every journey<br>deserves a guardian.</h1><p>Personalised driving intelligence, voice guidance, and responsive emergency support.</p><div class="auth-points"><span>✓ Live risk analysis</span><span>✓ Private driver profile</span><span>✓ Smart emergency workflow</span></div></div></div>
+    <div class="auth-panel"><div class="auth-form active" id="login-form"><p class="eyebrow">WELCOME BACK</p><h2>Sign in to RoadGuard</h2><p class="auth-sub">Use your registered email to access your driving dashboard.</p><label>Email address<input id="login-email" type="email" placeholder="you@example.com" autocomplete="email"></label><label>Password<input id="login-password" type="password" placeholder="Your password" autocomplete="current-password"></label><p class="auth-error" id="login-error"></p><button class="auth-submit" id="login-submit">Sign in <span>→</span></button><p class="switch-auth">New to RoadGuard? <button id="show-register">Create your account</button></p></div>
+      <div class="auth-form" id="register-form"><p class="eyebrow">GET STARTED</p><h2>Create your account</h2><p class="auth-sub">Your dashboard is ready in under a minute.</p><label>Your name<input id="register-name" type="text" placeholder="Your name" autocomplete="name"></label><label>Email address<input id="register-email" type="email" placeholder="you@example.com" autocomplete="email"></label><label>Create password<input id="register-password" type="password" placeholder="At least 8 characters" autocomplete="new-password"></label><label>Confirm password<input id="confirm-password" type="password" placeholder="Re-enter your password" autocomplete="new-password"></label><p class="auth-error" id="register-error"></p><button class="auth-submit" id="register-submit">Create account <span>→</span></button><p class="switch-auth">Already have an account? <button id="show-login">Sign in instead</button></p></div>
+    </div>
+  </div>
+  <div class="onboarding hidden" id="onboarding"><div class="onboard-card"><p class="eyebrow">STEP 1 OF 1 · PERSONALIZED SAFETY</p><h2>Build your driver profile</h2><p>RoadGuard uses these details to personalize your safety baseline.</p><div class="profile-form"><label>Full name<input id="onboard-name" disabled></label><label>Age<input id="onboard-age" type="number" min="16" max="100" placeholder="e.g. 21"></label><label>Driving experience (years)<input id="onboard-exp" type="number" min="0" placeholder="e.g. 2"></label><label>Primary vehicle<select id="onboard-vehicle"><option value="">Select vehicle</option><option>Car</option><option>Motorcycle</option><option>Scooter</option><option>Commercial vehicle</option></select></label><label class="wide">Emergency/medical notes (optional)<textarea id="onboard-notes" placeholder="Example: Allergies, condition, or leave blank"></textarea></label></div><p class="auth-error" id="onboard-error"></p><button class="auth-submit" id="onboard-submit">Save profile and continue <span>→</span></button></div></div>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">⌁</span><span>RoadGuard <b>AI</b></span></div>
+    <nav>
+      <button class="nav-item active" data-page="dashboard"><span>▦</span> Dashboard</button>
+      <button class="nav-item" data-page="drive"><span>◉</span> Drive Monitor</button>
+      <button class="nav-item" data-page="history"><span>◷</span> Trip History</button>
+      <button class="nav-item" data-page="emergency"><span>✚</span> Emergency</button>
+      <button class="nav-item" data-page="profile"><span>◎</span> Driver Profile</button>
+      <button class="nav-item" data-page="ai"><span>✦</span> AI Lab</button>
+    </nav>
+    <div class="sidebar-footer"><span class="status-dot"></span> System ready<br><small>Software prototype v1.0</small></div>
+  </aside>
+
+  <main>
+    <header><div><p class="eyebrow" id="today"></p><h1 id="page-title">Good morning, Harika.</h1></div><div class="header-actions"><button class="icon-btn" id="voice-toggle" title="Voice alerts">🔊</button><button class="avatar" data-page="profile" id="avatar">H</button><button class="logout-btn" id="logout">Log out</button></div></header>
+
+    <section class="page active" id="dashboard">
+      <div class="hero-card"><div><p class="eyebrow">YOUR CURRENT ROAD STATUS</p><div class="risk-row"><div class="risk-orb low" id="risk-orb"><span id="risk-number">18</span><small>/100</small></div><div><h2 id="risk-label">Low risk</h2><p id="risk-summary">Your current driving pattern is within your personal safe range.</p></div></div></div><div class="hero-actions"><button class="primary" data-page="drive">Start a drive <span>→</span></button><button class="secondary" id="demo-btn">Run demo</button></div></div>
+      <div class="metric-grid">
+        <article class="metric"><span class="metric-icon blue">⌁</span><p>DRIVING SCORE</p><h2 id="driving-score">82<span>/100</span></h2><small class="good">↑ 6% from last week</small></article>
+        <article class="metric"><span class="metric-icon orange">◷</span><p>THIS WEEK</p><h2 id="week-distance">0<span> km</span></h2><small>0 minutes driven</small></article>
+        <article class="metric"><span class="metric-icon red">!</span><p>HIGH-RISK EVENTS</p><h2 id="event-count">0</h2><small>In the last 7 days</small></article>
+        <article class="metric"><span class="metric-icon green">✓</span><p>SAFE STREAK</p><h2 id="safe-streak">0<span> days</span></h2><small>Keep it going</small></article>
+      </div>
+      <div class="content-grid"><article class="panel chart-panel"><div class="panel-heading"><div><h3>Risk trend</h3><p>Last 7 days</p></div><span class="legend"><i></i> Risk score</span></div><div class="chart-wrap"><svg id="risk-chart" viewBox="0 0 650 220" role="img" aria-label="Weekly driving risk trend"></svg></div></article><article class="panel factors"><div class="panel-heading"><div><h3>Risk factors</h3><p>Live analysis</p></div><span class="tag low-tag" id="factor-status">LOW</span></div><div id="factors-list"></div><button class="text-btn" data-page="drive">View live monitor →</button></article></div>
+      <article class="panel recent"><div class="panel-heading"><div><h3>Recent drives</h3><p>Your latest recorded journeys</p></div><button class="text-btn" data-page="history">View all →</button></div><div id="recent-drives"></div></article>
+    </section>
+
+    <section class="page" id="drive"><div class="drive-top"><div><p class="eyebrow">LIVE DRIVER MONITOR</p><h2 id="drive-status">Ready to monitor</h2><p id="gps-status">GPS and motion monitoring are off.</p></div><div class="drive-controls"><button class="primary" id="start-drive">Start monitoring</button><button class="danger hidden" id="stop-drive">End drive</button></div></div>
+      <div class="monitor-grid"><article class="monitor-main"><div class="speed-wrap"><svg viewBox="0 0 260 140"><path d="M22 125 A108 108 0 0 1 238 125" class="gauge-bg"/><path id="gauge" d="M22 125 A108 108 0 0 1 238 125" class="gauge-fill"/><line id="needle" x1="130" y1="125" x2="130" y2="43" class="needle"/></svg><div class="speed"><strong id="speed-value">0</strong><span>km/h</span></div></div><div class="telemetry"><div><span>Acceleration</span><b id="accel-value">0.0 m/s²</b></div><div><span>Trip duration</span><b id="duration-value">00:00</b></div><div><span>Distance</span><b id="distance-value">0.00 km</b></div></div><div class="event-feed"><h3>Live safety feed</h3><div id="feed"><p class="muted">Start monitoring to receive driving insights.</p></div></div></article>
+      <aside class="live-risk"><p class="eyebrow">DYNAMIC RISK</p><div class="risk-orb low" id="live-orb"><span id="live-risk">18</span><small>/100</small></div><h2 id="live-label">Low risk</h2><p id="live-explanation">Maintaining a comfortable speed and smooth movement.</p><div class="factor-bars" id="live-factors"></div><button id="test-accident" class="outline">Test accident workflow</button></aside></div>
+      <article class="permission-note"><span>◎</span><div><b>Using real device data</b><p>On a supported phone, allow location and motion access after starting. RoadGuard uses browser sensor APIs only while monitoring. Demo telemetry is available for presentations.</p></div></article>
+    </section>
+
+    <section class="page" id="history"><div class="section-heading"><div><p class="eyebrow">DRIVING ANALYTICS</p><h2>Trip history</h2></div><button class="outline" id="clear-history">Clear demo data</button></div><div class="stats-strip"><div><span>Total distance</span><b id="total-distance">0 km</b></div><div><span>Average risk</span><b id="average-risk">—</b></div><div><span>Trips completed</span><b id="trip-total">0</b></div></div><article class="panel table-panel"><div class="trip-table-head"><span>Date</span><span>Duration</span><span>Distance</span><span>Safety score</span><span>Status</span></div><div id="trip-table"></div></article></section>
+
+    <section class="page" id="emergency"><div class="section-heading"><div><p class="eyebrow">SAFETY RESPONSE</p><h2>Emergency center</h2><p>Configured contacts are prepared for a notification after a possible accident is detected and verified.</p></div><span class="tag green-tag">MONITORING READY</span></div><div class="emergency-grid"><article class="emergency-card"><span class="big-icon">✚</span><h3>Possible accident detection</h3><p>RoadGuard detects sudden impact patterns, abrupt deceleration and device orientation changes. It shows a 20-second verification countdown before escalating.</p><button class="danger" id="emergency-test">Simulate incident</button></article><article class="panel contacts"><div class="panel-heading"><div><h3>Emergency contacts</h3><p>Stored only for your signed-in prototype account</p></div><button class="text-btn" id="add-contact">+ Add</button></div><div id="contacts-list"></div></article></div><article class="panel workflow"><h3>Emergency notification workflow</h3><div class="flow"><div><b>1</b><span>Sensor event</span></div><i>→</i><div><b>2</b><span>20 sec verification</span></div><i>→</i><div><b>3</b><span>Location captured</span></div><i>→</i><div><b>4</b><span>Contacts prepared</span></div></div><p class="muted">Prototype note: this demo displays the emergency message and records an incident locally. It does not send a real SMS or contact medical/emergency services.</p></article></section>
+
+    <section class="page" id="profile"><div class="section-heading"><div><p class="eyebrow">PERSONALIZED DRIVER PROFILE</p><h2>Your safety preferences</h2><p>Set your preferences for your signed-in RoadGuard account.</p></div><button class="primary" id="save-profile">Save preferences</button></div><div class="profile-grid"><article class="panel profile-card"><div class="profile-avatar">H</div><h3>Your RoadGuard account</h3><p>Driver preferences</p><hr><label>Safe speed preference<input id="speed-pref" type="range" min="35" max="100" value="65"><output id="speed-pref-out">65 km/h</output></label><label>Voice guidance<select id="voice-pref"><option value="true">Enabled</option><option value="false">Muted</option></select></label></article><article class="panel baseline"><h3>Current preference summary</h3><p>Your values are stored separately for your signed-in account.</p><div class="baseline-metrics"><div><span>Typical speed</span><b id="typical-speed">—</b></div><div><span>Typical acceleration</span><b id="typical-accel">—</b></div><div><span>Risk sensitivity</span><b>Preference-based</b></div></div><h3>How risk is explained</h3><p class="muted">The live dashboard uses a browser safety indicator based on speed, motion, trip duration, and your preferences. It is separate from the Random Forest experiment in AI Lab and is not a prediction of an accident.</p></article></div></section>
+    <section class="page" id="ai"><div class="section-heading"><div><p class="eyebrow">MACHINE LEARNING WORKBENCH</p><h2>Train and explain RoadGuard AI</h2><p>Train the included Random Forest demonstration model, or upload a labelled CSV for an academic classification experiment.</p></div><button class="primary" id="train-model">Train demo model</button></div><article class="panel"><h3>Model evaluation</h3><p class="muted" id="ml-result">No model trained in this browser session.</p><hr><h3>CSV dataset columns</h3><p class="muted">speed, acceleration, braking, duration, weather, traffic, road_condition, risk_label (0 low, 1 moderate, 2 high)</p><input id="dataset-file" type="file" accept=".csv"><button class="outline" id="upload-model">Upload and train</button></article></section>
+  </main>
+  <div class="modal-backdrop hidden" id="modal"><div class="modal" id="modal-content"></div></div>
+  <div class="toast hidden" id="toast"></div>
+  <script src="app.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
