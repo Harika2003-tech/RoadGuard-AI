@@ -9,6 +9,7 @@ import math
 import os
 import secrets
 import sqlite3
+import json
 from datetime import datetime, timezone
 from functools import wraps
 from pathlib import Path
@@ -27,7 +28,9 @@ from werkzeug.utils import secure_filename
 from ml_service import predict, train
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "roadguard.db"
+# Vercel Functions have a read-only application bundle. `/tmp` is the
+# platform-provided writable location, but its contents are temporary.
+DB_PATH = Path("/tmp/roadguard.db") if os.environ.get("VERCEL") else BASE_DIR / "roadguard.db"
 SAFE_STATIC = {".css", ".js", ".html", ".svg", ".png", ".jpg", ".jpeg", ".ico"}
 load_dotenv(BASE_DIR / ".env")
 app = Flask(__name__)
@@ -94,10 +97,20 @@ def init_firebase() -> None:
         raise RuntimeError("firebase-admin is not installed. Run: pip install -r requirements.txt")
     if firebase_admin._apps:
         return
-    key_path = Path(os.environ.get("FIREBASE_SERVICE_ACCOUNT_PATH", ""))
-    if not key_path.is_file():
-        raise RuntimeError("FIREBASE_SERVICE_ACCOUNT_PATH must point to a private service-account JSON file.")
-    firebase_admin.initialize_app(credentials.Certificate(str(key_path)))
+    key_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON", "").strip()
+    if key_json:
+        try:
+            credential = credentials.Certificate(json.loads(key_json))
+        except (ValueError, TypeError) as exc:
+            raise RuntimeError("FIREBASE_SERVICE_ACCOUNT_JSON must contain valid service-account JSON.") from exc
+    else:
+        key_path = Path(os.environ.get("FIREBASE_SERVICE_ACCOUNT_PATH", ""))
+        if not key_path.is_file():
+            raise RuntimeError(
+                "Set FIREBASE_SERVICE_ACCOUNT_JSON or point FIREBASE_SERVICE_ACCOUNT_PATH to a private service-account JSON file."
+            )
+        credential = credentials.Certificate(str(key_path))
+    firebase_admin.initialize_app(credential)
 
 
 def add_column(connection: sqlite3.Connection, table: str, definition: str) -> None:

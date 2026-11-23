@@ -1,6 +1,8 @@
 """RoadGuard AI data processing, model training, evaluation and prediction."""
-from pathlib import Path
 import hashlib
+import os
+import shutil
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import joblib
@@ -13,7 +15,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 ROOT = Path(__file__).resolve().parent
-MODEL = ROOT / "roadguard_model.joblib"
+BUNDLED_MODEL = ROOT / "roadguard_model.joblib"
+# Vercel's project bundle is read-only; trained demo models can be stored only
+# in its temporary runtime directory.
+MODEL = Path("/tmp/roadguard_model.joblib") if os.environ.get("VERCEL") else BUNDLED_MODEL
 FEATURES = ["speed", "acceleration", "braking", "duration", "weather", "traffic", "road_condition"]
 CLASS_NAMES = {0: "Low", 1: "Moderate", 2: "High"}
 
@@ -128,9 +133,12 @@ def train(frame=None, source_name="uploaded CSV"):
 
 def predict(values):
     if not MODEL.exists():
-        # This fallback is only for a fresh demo installation. The paper-ready
-        # package includes the trained real-world model and does not need it.
-        train()
+        if BUNDLED_MODEL.exists() and MODEL != BUNDLED_MODEL:
+            shutil.copy2(BUNDLED_MODEL, MODEL)
+        else:
+            # This fallback is only for a fresh demo installation. The paper-ready
+            # package includes the trained real-world model and does not need it.
+            train()
     bundle = joblib.load(MODEL)
     row = pd.DataFrame([[float(values.get(feature, 0)) for feature in FEATURES]], columns=FEATURES)
     probability = bundle["model"].predict_proba(bundle["scaler"].transform(row))[0]
